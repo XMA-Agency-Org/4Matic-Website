@@ -5,6 +5,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import VehicleDetails from "../_components/VehicleDetails";
 import RelatedVehicles from "../_components/RelatedVehicles";
+import ScrollToTop from "../_components/ScrollToTop";
 import { getCar, getRelatedCars } from "../_actions/car-actions";
 
 interface VehicleDetailPageProps {
@@ -48,6 +49,7 @@ export default async function VehicleDetailPage({
 
   return (
     <div className="w-full min-h-screen bg-white dark:bg-secondary-950">
+      <ScrollToTop />
       <Header />
 
       <main className="pt-24">
