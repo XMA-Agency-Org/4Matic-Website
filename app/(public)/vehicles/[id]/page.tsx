@@ -8,16 +8,17 @@ import RelatedVehicles from "../_components/RelatedVehicles";
 import { getCar, getRelatedCars } from "../_actions/car-actions";
 
 interface VehicleDetailPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 // Generate metadata for the page
 export async function generateMetadata({
   params,
 }: VehicleDetailPageProps): Promise<Metadata> {
-  const car = await getCar(params.id);
+  const { id } = await params;
+  const car = await getCar(id);
 
   if (!car) {
     return {
@@ -35,7 +36,7 @@ export async function generateMetadata({
 export default async function VehicleDetailPage({
   params,
 }: VehicleDetailPageProps) {
-  const carId = params.id;
+  const { id: carId } = await params;
   const car = await getCar(carId);
 
   if (!car) {

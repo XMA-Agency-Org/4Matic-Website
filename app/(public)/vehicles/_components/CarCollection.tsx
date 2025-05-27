@@ -9,7 +9,7 @@ import CollectionEmpty from "./CollectionEmpty";
 import { getCars } from "../_actions/car-actions";
 
 interface CarCollectionProps {
-  searchParams: {
+  searchParams: Promise<{
     category?: string;
     brand?: string;
     minPrice?: string;
@@ -17,10 +17,11 @@ interface CarCollectionProps {
     passengers?: string;
     sort?: string;
     page?: string;
-  };
+  }>;
 }
 
 export default async function CarCollection({ searchParams }: CarCollectionProps) {
+  const params = await searchParams;
   const { 
     category, 
     brand, 
@@ -29,7 +30,7 @@ export default async function CarCollection({ searchParams }: CarCollectionProps
     passengers, 
     sort = "recommended",
     page = "1" 
-  } = searchParams;
+  } = params;
   
   const currentPage = parseInt(page, 10) || 1;
   const pageSize = 9;
@@ -88,11 +89,11 @@ export default async function CarCollection({ searchParams }: CarCollectionProps
   
   // Helper to create page URL
   const createPageUrl = (p: number) => {
-    const params = new URLSearchParams(
-      Object.entries(searchParams).filter(([_, v]) => v !== undefined && v !== null) as [string, string][]
+    const urlParams = new URLSearchParams(
+      Object.entries(params).filter(([_, v]) => v !== undefined && v !== null) as [string, string][]
     );
-    params.set("page", p.toString());
-    return `/vehicles?${params.toString()}`;
+    urlParams.set("page", p.toString());
+    return `/vehicles?${urlParams.toString()}`;
   };
   
   return (

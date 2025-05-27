@@ -12,9 +12,28 @@ interface ImageCarouselProps {
 }
 
 export default function ImageCarousel({ images, altText }: ImageCarouselProps) {
+  // Filter out empty/invalid images
+  const validImages = images?.filter(img => img && img.trim() !== '') || [];
+  
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [direction, setDirection] = useState(0); // -1 for left, 1 for right
+
+  // Function to handle going to previous image
+  const handlePrevious = () => {
+    setDirection(-1);
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === 0 ? validImages.length - 1 : prevIndex - 1,
+    );
+  };
+
+  // Function to handle going to next image
+  const handleNext = () => {
+    setDirection(1);
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === validImages.length - 1 ? 0 : prevIndex + 1,
+    );
+  };
 
   // Handle keyboard navigation
   useEffect(() => {
@@ -31,22 +50,6 @@ export default function ImageCarousel({ images, altText }: ImageCarouselProps) {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [currentImageIndex, isFullscreen]);
-
-  // Function to handle going to previous image
-  const handlePrevious = () => {
-    setDirection(-1);
-    setCurrentImageIndex((prevIndex) =>
-      prevIndex === 0 ? images.length - 1 : prevIndex - 1,
-    );
-  };
-
-  // Function to handle going to next image
-  const handleNext = () => {
-    setDirection(1);
-    setCurrentImageIndex((prevIndex) =>
-      prevIndex === images.length - 1 ? 0 : prevIndex + 1,
-    );
-  };
 
   // Function to handle thumbnail click
   const handleThumbnailClick = (index: number) => {
@@ -81,13 +84,18 @@ export default function ImageCarousel({ images, altText }: ImageCarouselProps) {
     },
   };
 
-  // If no images, show placeholder
-  if (!images || images.length === 0) {
+  // Show placeholder if no valid images
+  if (validImages.length === 0) {
     return (
       <div className="w-full h-96 bg-secondary-200 dark:bg-secondary-800 rounded-lg flex items-center justify-center">
-        <p className="text-secondary-500 dark:text-secondary-400">
-          No images available
-        </p>
+        <div className="text-center">
+          <div className="w-24 h-24 mx-auto mb-4 rounded-lg bg-secondary-300 dark:bg-secondary-700 flex items-center justify-center">
+            <span className="text-4xl">🚗</span>
+          </div>
+          <p className="text-secondary-500 dark:text-secondary-400">
+            No images available
+          </p>
+        </div>
       </div>
     );
   }
@@ -112,7 +120,7 @@ export default function ImageCarousel({ images, altText }: ImageCarouselProps) {
           >
             <div className="relative w-full h-full">
               <Image
-                src={images[currentImageIndex]}
+                src={validImages[currentImageIndex]}
                 alt={`${altText} - Image ${currentImageIndex + 1}`}
                 fill
                 className="object-cover"
@@ -124,9 +132,10 @@ export default function ImageCarousel({ images, altText }: ImageCarouselProps) {
         </AnimatePresence>
 
         {/* Navigation buttons */}
-        <div className="absolute z-50 inset-x-0 top-1/2 -translate-y-1/2 flex justify-between px-4">
-          <button
-            onClick={handlePrevious}
+        {validImages.length > 1 && (
+          <div className="absolute z-50 inset-x-0 top-1/2 -translate-y-1/2 flex justify-between px-4">
+            <button
+              onClick={handlePrevious}
             className="w-10 h-10 rounded-full bg-white/80 dark:bg-secondary-800/80 flex items-center justify-center text-secondary-700 dark:text-secondary-200 hover:bg-white dark:hover:bg-secondary-800 focus:outline-none focus:ring-2 focus:ring-primary-500 z-50"
             aria-label="Previous image"
           >
@@ -139,7 +148,8 @@ export default function ImageCarousel({ images, altText }: ImageCarouselProps) {
           >
             <ChevronRight className="w-6 h-6" />
           </button>
-        </div>
+          </div>
+        )}
 
         {/* Fullscreen button */}
         <button
@@ -152,33 +162,35 @@ export default function ImageCarousel({ images, altText }: ImageCarouselProps) {
 
         {/* Image counter */}
         <div className="absolute bottom-4 right-4 bg-black/60 text-white text-sm px-3 py-1 rounded-full">
-          {currentImageIndex + 1} / {images.length}
+          {currentImageIndex + 1} / {validImages.length}
         </div>
       </div>
 
       {/* Thumbnails */}
-      <div className="mt-4 grid grid-cols-4 gap-2">
-        {images.map((image, index) => (
-          <button
-            key={index}
-            onClick={() => handleThumbnailClick(index)}
-            className={`relative aspect-video rounded-md overflow-hidden border-2 transition-all ${
-              currentImageIndex === index
-                ? "border-primary-500 dark:border-primary-400"
-                : "border-transparent hover:border-secondary-300 dark:hover:border-secondary-700"
-            }`}
-            aria-label={`View image ${index + 1}`}
-          >
-            <Image
-              src={image}
-              alt={`${altText} - Thumbnail ${index + 1}`}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 25vw, 10vw"
-            />
-          </button>
-        ))}
-      </div>
+      {validImages.length > 1 && (
+        <div className="mt-4 grid grid-cols-4 gap-2">
+          {validImages.map((image, index) => (
+            <button
+              key={index}
+              onClick={() => handleThumbnailClick(index)}
+              className={`relative aspect-video rounded-md overflow-hidden border-2 transition-all ${
+                currentImageIndex === index
+                  ? "border-primary-500 dark:border-primary-400"
+                  : "border-transparent hover:border-secondary-300 dark:hover:border-secondary-700"
+              }`}
+              aria-label={`View image ${index + 1}`}
+            >
+              <Image
+                src={image}
+                alt={`${altText} - Thumbnail ${index + 1}`}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 25vw, 10vw"
+              />
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Fullscreen Modal */}
       {isFullscreen && (
@@ -208,7 +220,7 @@ export default function ImageCarousel({ images, altText }: ImageCarouselProps) {
               >
                 <div className="relative w-full max-w-6xl h-full max-h-[90vh]">
                   <Image
-                    src={images[currentImageIndex]}
+                    src={validImages[currentImageIndex]}
                     alt={`${altText} - Fullscreen ${currentImageIndex + 1}`}
                     fill
                     className="object-contain"
@@ -239,7 +251,7 @@ export default function ImageCarousel({ images, altText }: ImageCarouselProps) {
 
           {/* Image counter in fullscreen */}
           <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/70 text-white px-4 py-2 rounded-full">
-            {currentImageIndex + 1} / {images.length}
+            {currentImageIndex + 1} / {validImages.length}
           </div>
         </div>
       )}

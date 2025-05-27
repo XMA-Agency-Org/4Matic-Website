@@ -43,8 +43,8 @@ export default function Hero() {
             </div>
             
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight">
-              Find and book your <span className="text-primary-400 relative">
-                perfect car
+              Find And Book Your <span className="text-primary-400 relative">
+                Perfect Car
                 <svg className="absolute bottom-0 left-0 w-full h-3 text-primary-500/30" viewBox="0 0 300 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M1 5.5C32 2.5 62 1 153.5 5.5C245 10 283 10.5 299 8.5" stroke="currentColor" strokeWidth="8" strokeLinecap="round"/>
                 </svg>
