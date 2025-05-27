@@ -1,7 +1,7 @@
 // components/cars/CarCard.tsx
 import Image from "next/image";
 import Link from "next/link";
-import { Star, Users, Fuel, Gauge, DoorOpen, ArrowRight } from "lucide-react";
+import { Star, Zap, Settings, Gauge, Fuel, ArrowRight } from "lucide-react";
 import { Car } from "@/types/car";
 import { formatBrandName, getBrandStyle } from "@/lib/formatters";
 
@@ -76,33 +76,41 @@ export default function CarCard({ car, showFeatures = true }: CarCardProps) {
           </h3>
         </Link>
 
-        {/* Car Features - Optional */}
+        {/* Car Performance Specs - Optional */}
         {showFeatures && (
           <div className="grid grid-cols-2 gap-y-3 gap-x-2 mt-3 mb-4">
-            <div className="flex items-center">
-              <Users className="w-4 h-4 text-secondary-500 dark:text-secondary-400 mr-2 flex-shrink-0" />
-              <span className="text-secondary-700 dark:text-secondary-300 text-sm">
-                {car.passengers} Seats
-              </span>
-            </div>
-            <div className="flex items-center">
-              <DoorOpen className="w-4 h-4 text-secondary-500 dark:text-secondary-400 mr-2 flex-shrink-0" />
-              <span className="text-secondary-700 dark:text-secondary-300 text-sm">
-                {car.doors} Doors
-              </span>
-            </div>
-            <div className="flex items-center">
-              <Gauge className="w-4 h-4 text-secondary-500 dark:text-secondary-400 mr-2 flex-shrink-0" />
-              <span className="text-secondary-700 dark:text-secondary-300 text-sm">
-                {car.transmission}
-              </span>
-            </div>
-            <div className="flex items-center">
-              <Fuel className="w-4 h-4 text-secondary-500 dark:text-secondary-400 mr-2 flex-shrink-0" />
-              <span className="text-secondary-700 dark:text-secondary-300 text-sm">
-                {car.specs?.fuelType || "A/C"}
-              </span>
-            </div>
+            {car.specs?.acceleration && (
+              <div className="flex items-center">
+                <Zap className="w-4 h-4 text-secondary-500 dark:text-secondary-400 mr-2 flex-shrink-0" />
+                <span className="text-secondary-700 dark:text-secondary-300 text-sm">
+                  {car.specs.acceleration}
+                </span>
+              </div>
+            )}
+            {car.specs?.driveTrain && (
+              <div className="flex items-center">
+                <Settings className="w-4 h-4 text-secondary-500 dark:text-secondary-400 mr-2 flex-shrink-0" />
+                <span className="text-secondary-700 dark:text-secondary-300 text-sm">
+                  {car.specs.driveTrain}
+                </span>
+              </div>
+            )}
+            {car.specs?.topSpeed && (
+              <div className="flex items-center">
+                <Gauge className="w-4 h-4 text-secondary-500 dark:text-secondary-400 mr-2 flex-shrink-0" />
+                <span className="text-secondary-700 dark:text-secondary-300 text-sm">
+                  {car.specs.topSpeed}
+                </span>
+              </div>
+            )}
+            {car.specs?.fuelConsumption && (
+              <div className="flex items-center">
+                <Fuel className="w-4 h-4 text-secondary-500 dark:text-secondary-400 mr-2 flex-shrink-0" />
+                <span className="text-secondary-700 dark:text-secondary-300 text-sm">
+                  {car.specs.fuelConsumption}
+                </span>
+              </div>
+            )}
           </div>
         )}
 

@@ -1,15 +1,9 @@
 // app/(public)/vehicles/_components/vehicle-details/VehicleTabs.tsx
 import { Dispatch, SetStateAction } from "react";
 import {
-  BarChart3,
-  Battery,
-  Car,
   Fuel,
-  Gauge,
-  MapPin,
   Star,
   Timer,
-  Zap,
 } from "lucide-react";
 import { Car as CarType } from "@/types/car";
 
@@ -27,54 +21,16 @@ export default function VehicleTabs({
   // Create an array of specification items for display
   const specificationItems = [
     {
-      icon: <Car className="w-5 h-5" />,
-      label: "Engine",
-      value: car.specs?.engine || "N/A",
-    },
-    {
-      icon: <Zap className="w-5 h-5" />,
-      label: "Power",
-      value: car.specs?.power || "N/A",
-    },
-    {
-      icon: <BarChart3 className="w-5 h-5" />,
-      label: "Torque",
-      value: car.specs?.torque || "N/A",
-    },
-    {
       icon: <Timer className="w-5 h-5" />,
       label: "0-100 km/h",
       value: car.specs?.acceleration || "N/A",
     },
     {
-      icon: <Gauge className="w-5 h-5" />,
-      label: "Top Speed",
-      value: car.specs?.topSpeed || "N/A",
-    },
-    {
       icon: <Fuel className="w-5 h-5" />,
-      label: "Fuel Type",
-      value: car.specs?.fuelType || "N/A",
+      label: "Fuel Consumption",
+      value: car.specs?.fuelConsumption || "N/A",
     },
-    {
-      icon:
-        car.specs?.fuelType === "Electric" ? (
-          <Battery className="w-5 h-5" />
-        ) : (
-          <Fuel className="w-5 h-5" />
-        ),
-      label: car.specs?.fuelType === "Electric" ? "Range" : "Fuel Consumption",
-      value:
-        car.specs?.fuelType === "Electric"
-          ? car.specs?.range || "N/A"
-          : car.specs?.fuelConsumption || "N/A",
-    },
-    {
-      icon: <MapPin className="w-5 h-5" />,
-      label: "Drive",
-      value: car.specs?.driveTrain || "N/A",
-    },
-  ];
+  ].filter(item => item.value !== "N/A");
 
   return (
     <div className="mt-10">
@@ -143,26 +99,32 @@ export default function VehicleTabs({
               Technical Specifications
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {specificationItems.map((item, index) => (
-                <div
-                  key={index}
-                  className="bg-secondary-50 dark:bg-secondary-800 p-4 rounded-lg border border-secondary-200 dark:border-secondary-700"
-                >
-                  <div className="flex items-center mb-2">
-                    <div className="mr-2 text-primary-500 dark:text-primary-400">
-                      {item.icon}
+            {specificationItems.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {specificationItems.map((item, index) => (
+                  <div
+                    key={index}
+                    className="bg-secondary-50 dark:bg-secondary-800 p-4 rounded-lg border border-secondary-200 dark:border-secondary-700"
+                  >
+                    <div className="flex items-center mb-2">
+                      <div className="mr-2 text-primary-500 dark:text-primary-400">
+                        {item.icon}
+                      </div>
+                      <h3 className="text-sm font-medium text-secondary-500 dark:text-secondary-400">
+                        {item.label}
+                      </h3>
                     </div>
-                    <h3 className="text-sm font-medium text-secondary-500 dark:text-secondary-400">
-                      {item.label}
-                    </h3>
+                    <p className="text-lg font-semibold text-secondary-900 dark:text-white">
+                      {item.value}
+                    </p>
                   </div>
-                  <p className="text-lg font-semibold text-secondary-900 dark:text-white">
-                    {item.value}
-                  </p>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-secondary-600 dark:text-secondary-400 text-center py-8">
+                Technical specifications not available for this vehicle.
+              </p>
+            )}
           </div>
         )}
       </div>
