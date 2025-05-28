@@ -4,8 +4,8 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import CarCard from "@/components/cars/CarCard";
 import SortDropdown from "./SortDropdown";
-import FilterModal from "./FilterModal";
 import CollectionEmpty from "./CollectionEmpty";
+import FilterModal from "./FilterModal";
 import { getCars } from "../_actions/car-actions";
 
 interface CarCollectionProps {
@@ -106,7 +106,6 @@ export default async function CarCollection({ searchParams }: CarCollectionProps
             <span className="font-medium text-secondary-900 dark:text-white">{totalCars}</span> vehicles
           </p>
           
-          {/* Add the Filter Modal component here */}
           <FilterModal />
         </div>
         

@@ -24,28 +24,7 @@ const categories = [
   { id: "minivan", label: "Minivans" },
 ];
 
-const brands = [
-  { id: "all", label: "All Brands" },
-  { id: "mercedes", label: "Mercedes-Benz" },
-  { id: "bentley", label: "Bentley" },
-  { id: "rolls-royce", label: "Rolls-Royce" },
-  { id: "range-rover", label: "Range Rover" },
-  { id: "porsche", label: "Porsche" },
-  { id: "ferrari", label: "Ferrari" },
-  { id: "lamborghini", label: "Lamborghini" },
-  { id: "cadillac", label: "Cadillac" },
-  { id: "chevrolet", label: "Chevrolet" },
-  { id: "toyota", label: "Toyota" },
-  { id: "kia", label: "Kia" },
-  { id: "hyundai", label: "Hyundai" },
-  { id: "fiat", label: "Fiat" },
-  { id: "bmw", label: "BMW" },
-  { id: "audi", label: "Audi" },
-  { id: "gmc", label: "GMC" },
-  { id: "nissan", label: "Nissan" },
-  { id: "mini", label: "MINI" },
-  { id: "mitsubishi", label: "Mitsubishi" },
-];
+// Brands will be fetched from Contentful
 
 const passengerOptions = [
   { value: "2", label: "2 Passengers" },
@@ -106,6 +85,10 @@ export default function FilterModal() {
   // State for price range slider
   const [priceRange, setPriceRange] = useState([currentMinPrice, currentMaxPrice]);
   
+  // Brands state
+  const [brands, setBrands] = useState([{ id: "all", label: "All Brands" }]);
+  const [brandsLoading, setBrandsLoading] = useState(true);
+  
   // State for temporary filter values (before applying)
   const [tempFilters, setTempFilters] = useState({
     category: currentCategory,
@@ -127,6 +110,23 @@ export default function FilterModal() {
       setPriceRange([currentMinPrice, currentMaxPrice]);
     }
   }, [isFilterModalOpen, currentCategory, currentBrand, currentMinPrice, currentMaxPrice, currentPassengers]);
+
+  // Fetch brands via API route
+  useEffect(() => {
+    const fetchBrands = async () => {
+      try {
+        const response = await fetch('/api/brands');
+        const fetchedBrands = await response.json();
+        setBrands(fetchedBrands);
+      } catch (error) {
+        console.error('Error fetching brands:', error);
+      } finally {
+        setBrandsLoading(false);
+      }
+    };
+    
+    fetchBrands();
+  }, []);
 
   // Handle outside clicks to close modal
   useEffect(() => {

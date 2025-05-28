@@ -1,7 +1,7 @@
 // app/(public)/vehicles/_components/FilterSidebar.tsx
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Slider } from "@/components/ui/Slider";
 import { 
@@ -23,28 +23,7 @@ const categories = [
   { id: "minivan", label: "Minivans" },
 ];
 
-const brands = [
-  { id: "all", label: "All Brands" },
-  { id: "mercedes", label: "Mercedes-Benz" },
-  { id: "bentley", label: "Bentley" },
-  { id: "rolls-royce", label: "Rolls-Royce" },
-  { id: "range-rover", label: "Range Rover" },
-  { id: "porsche", label: "Porsche" },
-  { id: "ferrari", label: "Ferrari" },
-  { id: "lamborghini", label: "Lamborghini" },
-  { id: "cadillac", label: "Cadillac" },
-  { id: "chevrolet", label: "Chevrolet" },
-  { id: "toyota", label: "Toyota" },
-  { id: "kia", label: "Kia" },
-  { id: "hyundai", label: "Hyundai" },
-  { id: "fiat", label: "Fiat" },
-  { id: "bmw", label: "BMW" },
-  { id: "audi", label: "Audi" },
-  { id: "gmc", label: "GMC" },
-  { id: "nissan", label: "Nissan" },
-  { id: "mini", label: "MINI" },
-  { id: "mitsubishi", label: "Mitsubishi" },
-];
+// Brands will be fetched from Contentful
 
 const passengerOptions = [
   { value: "2", label: "2 Passengers" },
@@ -95,6 +74,10 @@ export default function FilterSidebar() {
   // For mobile filter visibility
   const [isMobileFilterVisible, setIsMobileFilterVisible] = useState(false);
   
+  // Brands state
+  const [brands, setBrands] = useState([{ id: "all", label: "All Brands" }]);
+  const [brandsLoading, setBrandsLoading] = useState(true);
+  
   // Get current filter values from URL
   const currentCategory = searchParams.get("category") || "all";
   const currentBrand = searchParams.get("brand") || "all";
@@ -104,6 +87,23 @@ export default function FilterSidebar() {
   
   // State for price range slider
   const [priceRange, setPriceRange] = useState([currentMinPrice, currentMaxPrice]);
+
+  // Fetch brands via API route
+  useEffect(() => {
+    const fetchBrands = async () => {
+      try {
+        const response = await fetch('/api/brands');
+        const fetchedBrands = await response.json();
+        setBrands(fetchedBrands);
+      } catch (error) {
+        console.error('Error fetching brands:', error);
+      } finally {
+        setBrandsLoading(false);
+      }
+    };
+    
+    fetchBrands();
+  }, []);
 
   const toggleSection = (section: keyof typeof openSections) => {
     setOpenSections((prev) => ({

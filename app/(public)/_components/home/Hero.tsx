@@ -1,29 +1,23 @@
 // app/(public)/_components/home/Hero.tsx
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
-import { CalendarIcon, MapPinIcon, Clock, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
 
 export default function Hero() {
-  const [location, setLocation] = useState("");
-  const [pickupDate, setPickupDate] = useState("");
-  const [returnDate, setReturnDate] = useState("");
-
   return (
     <div className="relative pt-24 overflow-hidden">
       {/* Background Elements */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-secondary-900 via-secondary-950 to-black opacity-95"></div>
+      <div className="absolute inset-0 z-10 pointer-events-none">
         
         {/* Pattern overlay */}
         <div 
-          className="absolute inset-0 opacity-10" 
+          className="absolute inset-0 opacity-5 z-50" 
           style={{ 
             backgroundImage: "url('/grid-pattern.svg')", 
-            backgroundSize: "30px 30px"
+            backgroundSize: "30px",
           }}
         ></div>
         

@@ -20,19 +20,9 @@ interface ContentfulRentalVehicle {
       urlSlug: string;
     }
   };
-  specifications?: {
-    fields: {
-      engine?: string;
-      power?: string;
-      torque?: string;
-      accelerationTime?: string;
-      topSpeed?: string;
-      fuelType?: string;
-      fuelConsumption?: string;
-      drivetrain?: string;
-      features?: string;
-    }
-  };
+  accelerationTime?: string;
+  fuelConsumption?: string;
+  features?: string;
   passengerCount?: number;
   doorCount?: number;
   transmissionType?: string;
@@ -67,17 +57,11 @@ function transformVehicleToLegacyCar(vehicle: Entry<ContentfulRentalVehicle>): C
     category: fields.category?.fields.urlSlug || '',
     brand: fields.brand?.fields.urlSlug || '',
     description: extractTextFromRichText(fields.description) || '',
-    specs: fields.specifications ? {
-      engine: fields.specifications.fields.engine || '',
-      power: fields.specifications.fields.power || '',
-      torque: fields.specifications.fields.torque || '',
-      acceleration: fields.specifications.fields.accelerationTime || '',
-      topSpeed: fields.specifications.fields.topSpeed || '',
-      fuelType: fields.specifications.fields.fuelType || '',
-      fuelConsumption: fields.specifications.fields.fuelConsumption,
-      driveTrain: fields.specifications.fields.drivetrain || '',
-      features: fields.specifications.fields.features?.split('\n') || []
-    } as CarSpecs : undefined
+    specs: {
+      acceleration: fields.accelerationTime || '',
+      fuelConsumption: fields.fuelConsumption || '',
+      features: Array.isArray(fields.features) ? fields.features : (fields.features?.split('\n') || [])
+    } as CarSpecs
   }
 }
 
@@ -178,11 +162,13 @@ export async function getFilteredVehicles(params: {
     // Add category filter
     if (params.category && params.category !== 'all') {
       query['fields.category.fields.urlSlug'] = params.category
+      query['fields.category.sys.contentType.sys.id'] = 'vehicleCategory'
     }
 
     // Add brand filter  
     if (params.brand && params.brand !== 'all') {
       query['fields.brand.fields.urlSlug'] = params.brand
+      query['fields.brand.sys.contentType.sys.id'] = 'carRentalBrand'
     }
 
     // Add price range filter

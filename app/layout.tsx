@@ -48,6 +48,7 @@ export default function RootLayout({
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} font-sans antialiased`}
+        suppressHydrationWarning={true}
       >
         <Suspense>{children}</Suspense>
         {/* Simple WhatsApp button */}
