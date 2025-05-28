@@ -366,7 +366,7 @@ export default function FilterModal() {
                 isOpen={openSections.brand}
                 onToggle={() => toggleSection("brand")}
               >
-                <div className="relative">
+                <div className="relative pt-1">
                   {/* Top fade effect to indicate scrollable content */}
                   <div className="absolute top-0 left-0 right-2 h-8 bg-gradient-to-b from-white dark:from-secondary-900 to-transparent z-10 pointer-events-none"></div>
                   
