@@ -35,6 +35,12 @@ interface ContentfulRentalVehicle {
   availabilityStatus?: boolean;
 }
 
+// Extract year from vehicle name
+function extractYearFromName(name: string): number | undefined {
+  const yearMatch = name.match(/\b(19|20)\d{2}\b/)
+  return yearMatch ? parseInt(yearMatch[0]) : undefined
+}
+
 // Transform Contentful vehicle data to legacy Car interface
 function transformVehicleToLegacyCar(vehicle: Entry<ContentfulRentalVehicle>): Car {
   const fields = vehicle.fields
@@ -57,6 +63,7 @@ function transformVehicleToLegacyCar(vehicle: Entry<ContentfulRentalVehicle>): C
     category: fields.category?.fields.urlSlug || '',
     brand: fields.brand?.fields.urlSlug || '',
     description: extractTextFromRichText(fields.description) || '',
+    year: extractYearFromName(fields.vehicleName),
     specs: {
       acceleration: fields.accelerationTime || '',
       fuelConsumption: fields.fuelConsumption || '',
@@ -148,6 +155,8 @@ export async function getFilteredVehicles(params: {
   minPrice?: number;
   maxPrice?: number;
   passengers?: number;
+  minYear?: number;
+  maxYear?: number;
   sort?: string;
   page?: number;
   pageSize?: number;
@@ -191,6 +200,14 @@ export async function getFilteredVehicles(params: {
     // Get all matching vehicles first
     const response = await contentfulClient.getEntries<ContentfulRentalVehicle>(query)
     let cars = response.items.map(transformVehicleToLegacyCar)
+
+    // Apply year filtering (client-side since we extract year from names)
+    if (params.minYear !== undefined) {
+      cars = cars.filter(car => car.year && car.year >= params.minYear!)
+    }
+    if (params.maxYear !== undefined) {
+      cars = cars.filter(car => car.year && car.year <= params.maxYear!)
+    }
 
     // Apply sorting (client-side since Contentful sorting is limited)
     const { sort = 'recommended', page = 1, pageSize = 9, maxPrice = 10000 } = params

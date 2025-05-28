@@ -68,6 +68,7 @@ export default function FilterSidebar() {
     category: false,
     brand: false,
     price: false,
+    year: false,
     passengers: false,
   });
   
@@ -83,10 +84,14 @@ export default function FilterSidebar() {
   const currentBrand = searchParams.get("brand") || "all";
   const currentMinPrice = Number(searchParams.get("minPrice") || "0");
   const currentMaxPrice = Number(searchParams.get("maxPrice") || MAX_PRICE.toString());
+  const currentMinYear = Number(searchParams.get("minYear") || "2020");
+  const currentMaxYear = Number(searchParams.get("maxYear") || "2025");
   const currentPassengers = searchParams.get("passengers") || "";
   
   // State for price range slider
   const [priceRange, setPriceRange] = useState([currentMinPrice, currentMaxPrice]);
+  // State for year range slider
+  const [yearRange, setYearRange] = useState([currentMinYear, currentMaxYear]);
 
   // Fetch brands via API route
   useEffect(() => {
@@ -141,6 +146,7 @@ export default function FilterSidebar() {
   const clearFilters = () => {
     router.push('/vehicles');
     setPriceRange([0, MAX_PRICE]);
+    setYearRange([2020, 2025]);
   };
 
   // Handler for category selection
@@ -163,6 +169,19 @@ export default function FilterSidebar() {
     applyFilters({
       minPrice: values[0] === 0 ? null : values[0].toString(),
       maxPrice: values[1] === MAX_PRICE ? null : values[1].toString(),
+    });
+  };
+
+  // Handler for year range change
+  const handleYearChange = (values: number[]) => {
+    setYearRange(values);
+  };
+
+  // Apply year filter on slider change end
+  const handleYearChangeEnd = (values: number[]) => {
+    applyFilters({
+      minYear: values[0] === 2020 ? null : values[0].toString(),
+      maxYear: values[1] === 2025 ? null : values[1].toString(),
     });
   };
 
@@ -194,6 +213,8 @@ export default function FilterSidebar() {
           currentBrand !== "all" || 
           currentMinPrice > 0 || 
           currentMaxPrice < MAX_PRICE || 
+          currentMinYear > 2020 || 
+          currentMaxYear < 2025 || 
           currentPassengers) && (
           <Button
             variant="ghost"
@@ -308,6 +329,27 @@ export default function FilterSidebar() {
           </FilterSection>
 
           <FilterSection
+            title="Year Range"
+            isOpen={openSections.year}
+            onToggle={() => toggleSection("year")}
+          >
+            <div className="px-2 pt-6 pb-2">
+              <Slider
+                min={2020}
+                max={2025}
+                step={1}
+                value={yearRange}
+                onChange={handleYearChange}
+                onChangeEnd={handleYearChangeEnd}
+              />
+              <div className="flex justify-between mt-2 text-sm text-secondary-600 dark:text-secondary-400">
+                <span>{yearRange[0]}</span>
+                <span>{yearRange[1]}</span>
+              </div>
+            </div>
+          </FilterSection>
+
+          <FilterSection
             title="Passengers"
             isOpen={openSections.passengers}
             onToggle={() => toggleSection("passengers")}
@@ -364,6 +406,8 @@ export default function FilterSidebar() {
             currentBrand !== "all" || 
             currentMinPrice > 0 || 
             currentMaxPrice < MAX_PRICE || 
+            currentMinYear > 2020 || 
+            currentMaxYear < 2025 || 
             currentPassengers) && (
             <Button
               variant="ghost"
@@ -447,6 +491,27 @@ export default function FilterSidebar() {
             <div className="flex justify-between mt-2 text-sm text-secondary-600 dark:text-secondary-400">
               <span>{formatPrice(priceRange[0])}</span>
               <span>{formatPrice(priceRange[1])}+</span>
+            </div>
+          </div>
+        </FilterSection>
+
+        <FilterSection
+          title="Year Range"
+          isOpen={openSections.year}
+          onToggle={() => toggleSection("year")}
+        >
+          <div className="px-2 pt-6 pb-2">
+            <Slider
+              min={2020}
+              max={2025}
+              step={1}
+              value={yearRange}
+              onChange={handleYearChange}
+              onChangeEnd={handleYearChangeEnd}
+            />
+            <div className="flex justify-between mt-2 text-sm text-secondary-600 dark:text-secondary-400">
+              <span>{yearRange[0]}</span>
+              <span>{yearRange[1]}</span>
             </div>
           </div>
         </FilterSection>

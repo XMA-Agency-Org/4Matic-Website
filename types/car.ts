@@ -70,6 +70,7 @@ export interface Car {
   brand: string;
   description?: string;
   specs?: CarSpecs;
+  year?: number; // Vehicle year extracted from name
 }
 
 export interface CarFilters {
@@ -78,6 +79,8 @@ export interface CarFilters {
   minPrice?: number;
   maxPrice?: number;
   passengers?: number;
+  minYear?: number;
+  maxYear?: number;
   sort?: 'recommended' | 'price-asc' | 'price-desc' | 'rating-desc';
   page?: number;
   pageSize?: number;

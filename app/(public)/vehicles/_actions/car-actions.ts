@@ -10,6 +10,8 @@ interface GetCarsParams {
   minPrice?: number;
   maxPrice?: number;
   passengers?: number;
+  minYear?: number;
+  maxYear?: number;
   sort?: string;
   page?: number;
   pageSize?: number;
@@ -21,7 +23,9 @@ export async function getCars(params: GetCarsParams) {
     brand, 
     minPrice = 0, 
     maxPrice = MAX_PRICE,
-    passengers, 
+    passengers,
+    minYear,
+    maxYear,
     sort = "recommended", 
     page = 1, 
     pageSize = 9 
@@ -34,6 +38,8 @@ export async function getCars(params: GetCarsParams) {
     minPrice,
     maxPrice: maxPrice,
     passengers,
+    minYear,
+    maxYear,
     sort,
     page,
     pageSize

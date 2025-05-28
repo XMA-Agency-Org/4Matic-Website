@@ -10,6 +10,8 @@ export async function GET(request: NextRequest) {
     const minPrice = searchParams.get('minPrice')
     const maxPrice = searchParams.get('maxPrice')
     const passengers = searchParams.get('passengers')
+    const minYear = searchParams.get('minYear')
+    const maxYear = searchParams.get('maxYear')
     const sort = searchParams.get('sort')
     const page = searchParams.get('page')
     const pageSize = searchParams.get('pageSize')
@@ -25,6 +27,8 @@ export async function GET(request: NextRequest) {
         minPrice: minPrice ? parseInt(minPrice) : undefined,
         maxPrice: maxPrice ? parseInt(maxPrice) : undefined,
         passengers: passengers ? parseInt(passengers) : undefined,
+        minYear: minYear ? parseInt(minYear) : undefined,
+        maxYear: maxYear ? parseInt(maxYear) : undefined,
         sort: sort || undefined,
         page: page ? parseInt(page) : undefined,
         pageSize: pageSize ? parseInt(pageSize) : undefined,

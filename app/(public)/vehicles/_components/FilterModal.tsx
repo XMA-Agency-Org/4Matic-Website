@@ -72,6 +72,7 @@ export default function FilterModal() {
     category: true,
     brand: true,
     price: true,
+    year: true,
     passengers: true,
   });
   
@@ -80,10 +81,14 @@ export default function FilterModal() {
   const currentBrand = searchParams.get("brand") || "all";
   const currentMinPrice = Number(searchParams.get("minPrice") || "0");
   const currentMaxPrice = Number(searchParams.get("maxPrice") || MAX_PRICE.toString());
+  const currentMinYear = Number(searchParams.get("minYear") || "2020");
+  const currentMaxYear = Number(searchParams.get("maxYear") || "2025");
   const currentPassengers = searchParams.get("passengers") || "";
   
   // State for price range slider
   const [priceRange, setPriceRange] = useState([currentMinPrice, currentMaxPrice]);
+  // State for year range slider
+  const [yearRange, setYearRange] = useState([currentMinYear, currentMaxYear]);
   
   // Brands state
   const [brands, setBrands] = useState([{ id: "all", label: "All Brands" }]);
@@ -94,6 +99,7 @@ export default function FilterModal() {
     category: currentCategory,
     brand: currentBrand,
     priceRange: [currentMinPrice, currentMaxPrice],
+    yearRange: [currentMinYear, currentMaxYear],
     passengers: currentPassengers
   });
 
@@ -104,12 +110,14 @@ export default function FilterModal() {
         category: currentCategory,
         brand: currentBrand,
         priceRange: [currentMinPrice, currentMaxPrice],
+        yearRange: [currentMinYear, currentMaxYear],
         passengers: currentPassengers
       });
       
       setPriceRange([currentMinPrice, currentMaxPrice]);
+      setYearRange([currentMinYear, currentMaxYear]);
     }
-  }, [isFilterModalOpen, currentCategory, currentBrand, currentMinPrice, currentMaxPrice, currentPassengers]);
+  }, [isFilterModalOpen, currentCategory, currentBrand, currentMinPrice, currentMaxPrice, currentMinYear, currentMaxYear, currentPassengers]);
 
   // Fetch brands via API route
   useEffect(() => {
@@ -195,6 +203,19 @@ export default function FilterModal() {
       params.set("maxPrice", tempFilters.priceRange[1].toString());
     }
     
+    // Year Range
+    if (tempFilters.yearRange[0] === 2020) {
+      params.delete("minYear");
+    } else {
+      params.set("minYear", tempFilters.yearRange[0].toString());
+    }
+    
+    if (tempFilters.yearRange[1] === 2025) {
+      params.delete("maxYear");
+    } else {
+      params.set("maxYear", tempFilters.yearRange[1].toString());
+    }
+    
     // Passengers
     if (!tempFilters.passengers) {
       params.delete("passengers");
@@ -218,10 +239,12 @@ export default function FilterModal() {
       category: "all",
       brand: "all",
       priceRange: [0, MAX_PRICE],
+      yearRange: [2020, 2025],
       passengers: ""
     });
     
     setPriceRange([0, MAX_PRICE]);
+    setYearRange([2020, 2025]);
   };
 
   // Apply clear filters on button click and close modal
@@ -252,6 +275,16 @@ export default function FilterModal() {
     setTempFilters(prev => ({
       ...prev,
       priceRange: values
+    }));
+  };
+
+  // Handler for year range change
+  const handleYearChange = (values: number[]) => {
+    console.log('Year range changed to:', values);
+    setYearRange(values);
+    setTempFilters(prev => ({
+      ...prev,
+      yearRange: values
     }));
   };
 
@@ -318,7 +351,7 @@ export default function FilterModal() {
         <div className="fixed inset-0 bg-secondary-900/60 z-50 backdrop-blur-sm flex items-center justify-center p-4">
           {/* Modal Content */}
           <div 
-            className="filter-modal-content bg-white dark:bg-secondary-900 rounded-xl shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
+            className="filter-modal-content bg-white dark:bg-secondary-900 rounded-xl shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto pointer-events-auto"
           >
             <div className="sticky top-0 z-10 bg-white dark:bg-secondary-900 p-4 border-b border-secondary-200 dark:border-secondary-700 flex justify-between items-center">
               <h2 className="font-bold text-xl text-secondary-900 dark:text-white">Filters</h2>
@@ -406,17 +439,37 @@ export default function FilterModal() {
                 isOpen={openSections.price}
                 onToggle={() => toggleSection("price")}
               >
-                <div className="px-2 pt-6 pb-2">
+                <div className="px-2 pt-6 pb-2 relative z-10">
                   <Slider
                     min={0}
                     max={MAX_PRICE}
                     step={100}
                     value={priceRange}
-                    onChange={handlePriceChange}
+                    onValueChange={handlePriceChange}
                   />
                   <div className="flex justify-between mt-2 text-sm text-secondary-600 dark:text-secondary-400">
                     <span>{formatPrice(priceRange[0])}</span>
                     <span>{formatPrice(priceRange[1])}</span>
+                  </div>
+                </div>
+              </FilterSection>
+
+              <FilterSection
+                title="Year Range"
+                isOpen={openSections.year}
+                onToggle={() => toggleSection("year")}
+              >
+                <div className="px-2 pt-6 pb-2 relative z-10">
+                  <Slider
+                    min={2020}
+                    max={2025}
+                    step={1}
+                    value={yearRange}
+                    onValueChange={handleYearChange}
+                  />
+                  <div className="flex justify-between mt-2 text-sm text-secondary-600 dark:text-secondary-400">
+                    <span>{yearRange[0]}</span>
+                    <span>{yearRange[1]}</span>
                   </div>
                 </div>
               </FilterSection>
