@@ -5,6 +5,29 @@ import Image from "next/image";
 import Link from "next/link";
 import { Menu, X, ChevronDown, Phone } from "lucide-react";
 import Button from "../ui/Button";
+import {
+  MBIcon,
+  BentleyIcon,
+  RollsRoyceIcon,
+  LandroverIcon,
+  LamborghiniIcon,
+  FerrariLogo,
+  AudiIcon,
+  BMWIcon,
+  PorscheIcon,
+  ToyotaIcon,
+  KiaIcon,
+  HyundaiIcon,
+  NissanLogo,
+  MitsubishiIcon,
+  ChevroletLogo,
+  CadillacIcon,
+  FiatIcon,
+  MiniIcon,
+  MazdaIcon,
+  GMCLogo,
+} from "@cardog-icons/react";
+import BMW from "@/public/brands/bmw-logo-2020-white-download.png";
 
 interface NavItem {
   label: string;
@@ -18,6 +41,9 @@ const Header: React.FC = () => {
   const [activeMobileDropdown, setActiveMobileDropdown] = useState<
     string | null
   >(null);
+  const [brands, setBrands] = useState<Array<{ id: string; label: string }>>(
+    [],
+  );
 
   // Updated navigation items for a luxury car rental service
   const navItems: NavItem[] = [
@@ -36,17 +62,28 @@ const Header: React.FC = () => {
     {
       label: "Brands",
       href: "#",
-      children: [
-        { label: "Mercedes-Benz", href: "/vehicles?brand=mercedes" },
-        { label: "Bentley", href: "/vehicles?brand=bentley" },
-        { label: "Rolls-Royce", href: "/vehicles?brand=rolls-royce" },
-        { label: "Range Rover", href: "/vehicles?brand=range-rover" },
-        { label: "Lamborghini", href: "/vehicles?brand=lamborghini" },
-        { label: "Ferrari", href: "/vehicles?brand=ferrari" },
-      ],
+      children: brands.map((brand) => ({
+        label: brand.label,
+        href: brand.id === "all" ? "/brands" : `/vehicles?brand=${brand.id}`,
+      })),
     },
     { label: "Contact Us", href: "/contact-us" },
   ];
+
+  // Fetch brands on mount
+  useEffect(() => {
+    const fetchBrands = async () => {
+      try {
+        const response = await fetch("/api/brands");
+        const brandsData = await response.json();
+        setBrands(brandsData);
+      } catch (error) {
+        console.error("Error fetching brands:", error);
+        setBrands([{ id: "all", label: "All Brands" }]);
+      }
+    };
+    fetchBrands();
+  }, []);
 
   // Handle scroll effect
   useEffect(() => {
@@ -124,7 +161,30 @@ const Header: React.FC = () => {
                 )}
 
                 {/* Dropdown for desktop */}
-                {item.children && (
+                {item.children && item.label === "Brands" && (
+                  <div className="absolute left-0 mt-1 w-80 origin-top-right rounded-md shadow-lg overflow-hidden bg-white dark:bg-secondary-900 ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform group-hover:translate-y-0 translate-y-2 z-50">
+                    <div className="p-4">
+                      <div className="grid grid-cols-3 gap-3">
+                        {item.children.map((child) => (
+                          <Link
+                            key={child.label}
+                            href={child.href}
+                            className="flex flex-col items-center p-3 text-xs text-secondary-900 dark:text-white hover:bg-secondary-100 dark:hover:bg-secondary-800 rounded-md transition-colors"
+                          >
+                            <div className="mb-1">
+                              {getBrandIcon(child.href.split("brand=")[1])}
+                            </div>
+                            <span className="text-center leading-tight">
+                              {child.label}
+                            </span>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {/* Regular dropdown for other items */}
+                {item.children && item.label !== "Brands" && (
                   <div className="absolute left-0 mt-1 w-56 origin-top-right rounded-md shadow-lg overflow-hidden bg-white dark:bg-secondary-900 ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform group-hover:translate-y-0 translate-y-2 z-50">
                     <div className="py-1">
                       {item.children.map((child) => (
@@ -219,9 +279,10 @@ const Header: React.FC = () => {
                           <Link
                             key={child.label}
                             href={child.href}
-                            className="block py-2 text-secondary-200 hover:text-white text-sm"
+                            className="flex items-center py-2 text-secondary-200 hover:text-white text-sm"
                             onClick={closeMobileMenu}
                           >
+                            {getBrandIcon(child.href.split("brand=")[1])}
                             {child.label}
                           </Link>
                         ))}
@@ -258,5 +319,41 @@ const Header: React.FC = () => {
     </header>
   );
 };
+
+// Helper function to get brand icons for dropdown
+function getBrandIcon(brandId: string) {
+  const iconProps = {
+    className: "mr-2 md:mr-0 text-3xl",
+  };
+
+  const brandIconMap: Record<string, JSX.Element> = {
+    mercedes: <MBIcon style={{ filter: "invert(1)" }} {...iconProps} />,
+    "mercedes-benz": <MBIcon style={{ filter: "invert(1)" }} {...iconProps} />,
+    bentley: <BentleyIcon {...iconProps} />,
+    "rolls-royce": (
+      <RollsRoyceIcon style={{ filter: "invert(1)" }} {...iconProps} />
+    ),
+    "land-rover": <LandroverIcon {...iconProps} />,
+    "range-rover": <LandroverIcon {...iconProps} />,
+    lamborghini: <LamborghiniIcon {...iconProps} />,
+    ferrari: <FerrariLogo {...iconProps} />,
+    audi: <AudiIcon style={{ filter: "invert(1)" }} {...iconProps} />,
+    bmw: <Image src={BMW} width={20} height={50} {...iconProps} />,
+    porsche: <PorscheIcon {...iconProps} />,
+    toyota: <ToyotaIcon {...iconProps} />,
+    kia: <KiaIcon style={{ filter: "invert(1)" }} {...iconProps} />,
+    hyundai: <HyundaiIcon {...iconProps} />,
+    nissan: <NissanLogo style={{ filter: "invert(1)" }} {...iconProps} />,
+    mitsubishi: <MitsubishiIcon {...iconProps} />,
+    chevrolet: <ChevroletLogo style={{ filter: "invert(1)" }} {...iconProps} />,
+    cadillac: <CadillacIcon {...iconProps} />,
+    gmc: <GMCLogo style={{ filter: "invert(1)" }} {...iconProps} />,
+    fiat: <FiatIcon {...iconProps} />,
+    mini: <MiniIcon style={{ filter: "invert(1)" }} {...iconProps} />,
+    mazda: <MazdaIcon {...iconProps} />,
+  };
+
+  return brandIconMap[brandId] || null;
+}
 
 export default Header;
