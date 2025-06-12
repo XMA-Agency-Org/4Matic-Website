@@ -249,22 +249,6 @@ export default function ContactUsPage() {
               <div className="border border-secondary-200 dark:border-secondary-700 rounded-lg overflow-hidden">
                 <details className="group">
                   <summary className="flex justify-between items-center p-6 cursor-pointer bg-white dark:bg-secondary-800 text-secondary-900 dark:text-white font-medium">
-                    Do you offer chauffeur services?
-                    <span className="transition-transform duration-200 group-open:rotate-180">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    </span>
-                  </summary>
-                  <div className="p-6 pt-0 bg-white dark:bg-secondary-800 text-secondary-700 dark:text-secondary-300">
-                    <p>Yes, we offer professional chauffeur services for most vehicles in our fleet. Our chauffeurs are highly trained, professional, and familiar with the area. This service can be arranged at the time of booking or added to an existing reservation with advance notice.</p>
-                  </div>
-                </details>
-              </div>
-              
-              <div className="border border-secondary-200 dark:border-secondary-700 rounded-lg overflow-hidden">
-                <details className="group">
-                  <summary className="flex justify-between items-center p-6 cursor-pointer bg-white dark:bg-secondary-800 text-secondary-900 dark:text-white font-medium">
                     What is included in the rental price?
                     <span className="transition-transform duration-200 group-open:rotate-180">
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
