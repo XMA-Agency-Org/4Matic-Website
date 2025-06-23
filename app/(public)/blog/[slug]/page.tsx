@@ -4,15 +4,18 @@ import { getBlogPostBySlug, getRelatedPosts } from '@/lib/contentful-blog-api'
 import BlogPostContent from '../_components/BlogPostContent'
 import RelatedPosts from '../_components/RelatedPosts'
 import BlogJsonLd from '../_components/BlogJsonLd'
+import Header from '@/components/layout/Header'
+import Footer from '@/components/layout/Footer'
 
 interface BlogPostPageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
-  const post = await getBlogPostBySlug(params.slug)
+  const { slug } = await params
+  const post = await getBlogPostBySlug(slug)
   
   if (!post) {
     return {
@@ -61,7 +64,8 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
-  const post = await getBlogPostBySlug(params.slug)
+  const { slug } = await params
+  const post = await getBlogPostBySlug(slug)
   
   if (!post) {
     notFound()
@@ -78,12 +82,16 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   return (
     <>
       <BlogJsonLd post={post} />
-      <main className="min-h-screen bg-background">
-        <BlogPostContent post={post} />
-        {relatedPosts.length > 0 && (
-          <RelatedPosts posts={relatedPosts} currentPostId={post.id} />
-        )}
-      </main>
+      <div className="min-h-screen bg-white dark:bg-secondary-950">
+        <Header />
+        <main className="pt-24">
+          <BlogPostContent post={post} />
+          {relatedPosts.length > 0 && (
+            <RelatedPosts posts={relatedPosts} currentPostId={post.id} />
+          )}
+        </main>
+        <Footer />
+      </div>
     </>
   )
 }

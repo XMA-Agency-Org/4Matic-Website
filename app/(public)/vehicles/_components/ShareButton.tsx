@@ -1,7 +1,7 @@
 // app/(public)/vehicles/_components/ShareButton.tsx
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Share2,
   Check,
@@ -20,6 +20,11 @@ interface ShareButtonProps {
 export default function ShareButton({ car }: ShareButtonProps) {
   const [showShareOptions, setShowShareOptions] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   // Get the brand name
   const brandName = formatBrandName(car.brand);
@@ -35,7 +40,7 @@ export default function ShareButton({ car }: ShareButtonProps) {
     e.stopPropagation(); // Prevent event bubbling
 
     // If Web Share API is available, use it directly
-    if (navigator.share) {
+    if (isClient && typeof navigator !== "undefined" && navigator.share) {
       try {
         await navigator.share({
           title: `4MATIC Luxury: ${brandName} ${car.name}`,

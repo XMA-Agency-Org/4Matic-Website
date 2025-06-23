@@ -17,7 +17,7 @@ export async function shareVehicle(car: Car, baseUrl: string = ''): Promise<bool
   const text = `Check out the ${car.name} for $${car.price}/day on 4MATIC Car Rental!`;
   
   // Try using the Web Share API if available
-  if (navigator.share) {
+  if (typeof navigator !== 'undefined' && navigator.share) {
     try {
       await navigator.share({
         title,
@@ -30,7 +30,7 @@ export async function shareVehicle(car: Car, baseUrl: string = ''): Promise<bool
       console.error('Error sharing:', error);
       return false;
     }
-  } else {
+  } else if (typeof navigator !== 'undefined' && navigator.clipboard) {
     // Fallback to copying to clipboard
     try {
       await navigator.clipboard.writeText(`${title}\n${text}\n${url}`);
@@ -40,4 +40,6 @@ export async function shareVehicle(car: Car, baseUrl: string = ''): Promise<bool
       return false;
     }
   }
+  
+  return false;
 }

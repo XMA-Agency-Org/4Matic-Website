@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Share2, Twitter, Facebook, Linkedin, Link, Check } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import {
@@ -17,6 +17,11 @@ interface ShareButtonProps {
 
 export default function ShareButton({ title, url }: ShareButtonProps) {
   const [copied, setCopied] = useState(false)
+  const [isClient, setIsClient] = useState(false)
+  
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
   
   const shareLinks = {
     twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`,
@@ -26,7 +31,9 @@ export default function ShareButton({ title, url }: ShareButtonProps) {
   
   const copyToClipboard = async () => {
     try {
-      await navigator.clipboard.writeText(url)
+      if (typeof navigator !== 'undefined' && navigator.clipboard) {
+        await navigator.clipboard.writeText(url)
+      }
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     } catch (err) {
@@ -35,7 +42,7 @@ export default function ShareButton({ title, url }: ShareButtonProps) {
   }
   
   const handleNativeShare = async () => {
-    if (navigator.share) {
+    if (typeof navigator !== 'undefined' && navigator.share) {
       try {
         await navigator.share({
           title,
@@ -56,7 +63,7 @@ export default function ShareButton({ title, url }: ShareButtonProps) {
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        {navigator.share && (
+        {isClient && typeof navigator !== 'undefined' && navigator.share && (
           <DropdownMenuItem onClick={handleNativeShare}>
             <Share2 className="w-4 h-4 mr-2" />
             Share

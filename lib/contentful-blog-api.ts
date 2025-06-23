@@ -71,9 +71,9 @@ export async function getBlogPosts(filters: BlogFilters = {}): Promise<Paginated
   try {
     const { page = 1, pageSize = 12, category, tag, search } = filters
     
-    // Build query
+    // Build query - using actual content type ID from Contentful
     const query: any = {
-      content_type: 'blogPost',
+      content_type: '5T2b3cunQqI07B398by7ut', // Blog Post content type ID
       include: 2,
       order: '-fields.publishDate',
       'fields.publishDate[lte]': new Date().toISOString()
@@ -82,13 +82,13 @@ export async function getBlogPosts(filters: BlogFilters = {}): Promise<Paginated
     // Add category filter
     if (category) {
       query['fields.categories.fields.slug[match]'] = category
-      query['fields.categories.sys.contentType.sys.id'] = 'blogCategory'
+      query['fields.categories.sys.contentType.sys.id'] = '3dlLYadZoDWWVaXkZI8Rhm'
     }
     
     // Add tag filter
     if (tag) {
       query['fields.tags.fields.slug[match]'] = tag
-      query['fields.tags.sys.contentType.sys.id'] = 'blogTag'
+      query['fields.tags.sys.contentType.sys.id'] = 'qUlImdno2K9PAmQCdjR86'
     }
     
     // Add search filter
@@ -137,7 +137,7 @@ export async function getBlogPosts(filters: BlogFilters = {}): Promise<Paginated
 export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
   try {
     const response = await contentfulClient.getEntries<ContentfulBlogPost>({
-      content_type: 'blogPost',
+      content_type: '5T2b3cunQqI07B398by7ut', // Blog Post content type ID
       'fields.slug': slug,
       include: 2,
       limit: 1
@@ -166,7 +166,7 @@ export async function getRelatedPosts(
     const categoryIds = categories.map(cat => cat.id)
     
     const query: any = {
-      content_type: 'blogPost',
+      content_type: '5T2b3cunQqI07B398by7ut', // Blog Post content type ID
       include: 2,
       limit: limit + 1, // Get one extra to exclude current post
       'sys.id[ne]': postId,
@@ -185,7 +185,7 @@ export async function getRelatedPosts(
     if (posts.length < limit && tags.length > 0) {
       const tagIds = tags.map(tag => tag.id)
       const tagQuery: any = {
-        content_type: 'blogPost',
+        content_type: '5T2b3cunQqI07B398by7ut', // Blog Post content type ID
         include: 2,
         limit: limit - posts.length + 1,
         'sys.id[nin]': [postId, ...posts.map(p => p.id)].join(','),
@@ -210,7 +210,7 @@ export async function getRelatedPosts(
 export async function getAllCategories(): Promise<BlogCategory[]> {
   try {
     const response = await contentfulClient.getEntries<ContentfulBlogCategory>({
-      content_type: 'blogCategory',
+      content_type: '3dlLYadZoDWWVaXkZI8Rhm', // Blog Category content type ID
       order: 'fields.name'
     })
     
@@ -230,7 +230,7 @@ export async function getAllCategories(): Promise<BlogCategory[]> {
 export async function getAllTags(): Promise<BlogTag[]> {
   try {
     const response = await contentfulClient.getEntries<ContentfulBlogTag>({
-      content_type: 'blogTag',
+      content_type: 'qUlImdno2K9PAmQCdjR86', // Blog Tag content type ID
       order: 'fields.name'
     })
     
@@ -250,7 +250,7 @@ export async function getAllTags(): Promise<BlogTag[]> {
 export async function getFeaturedPosts(limit: number = 3): Promise<BlogPost[]> {
   try {
     const response = await contentfulClient.getEntries<ContentfulBlogPost>({
-      content_type: 'blogPost',
+      content_type: '5T2b3cunQqI07B398by7ut', // Blog Post content type ID
       include: 2,
       limit,
       order: '-fields.publishDate',
