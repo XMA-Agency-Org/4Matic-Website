@@ -281,79 +281,6 @@ export const carsDatabase: Car[] = [
     }
   },
 
-  // Bentley Vehicles
-  // {
-  //   id: "bentley-continental-gt",
-  //   name: "Bentley Continental GT V8",
-  //   images: [
-  //   ],
-  //   rating: 4.7,
-  //   reviews: 124,
-  //   passengers: 4,
-  //   airConditioning: true,
-  //   doors: 2,
-  //   transmission: "Auto",
-  //   price: convertToAED(380),
-  //   category: "luxury",
-  //   brand: "bentley",
-  //   description: "The Bentley Continental GT V8 combines power and elegance in a grand touring package. With its distinctive styling, exquisite handcrafted interior, and powerful V8 engine, it offers an exceptional driving experience that blends performance with British luxury craftsmanship.",
-  //   specs: {
-  //     engine: "4.0L Twin-Turbo V8",
-  //     power: "542 hp",
-  //     torque: "770 Nm",
-  //     acceleration: "4.0 sec (0-100 km/h)",
-  //     topSpeed: "318 km/h",
-  //     fuelType: "Gasoline",
-  //     fuelConsumption: "11.2 L/100km",
-  //     driveTrain: "AWD",
-  //     features: [
-  //       "Handcrafted wood veneers",
-  //       "Naim for Bentley audio system",
-  //       "Rotating display",
-  //       "Active all-wheel drive",
-  //       "Air suspension with continuous damping control",
-  //       "Massage seats",
-  //       "City Specification and Touring Specification",
-  //       "Mood lighting"
-  //     ]
-  //   }
-  // },
-  // {
-  //   id: "bentley-bentayga-azure",
-  //   name: "Bentley Bentayga Azure",
-  //   images: [
-  //   ],
-  //   rating: 4.8,
-  //   reviews: 96,
-  //   passengers: 5,
-  //   airConditioning: true,
-  //   doors: 5,
-  //   transmission: "Auto",
-  //   price: convertToAED(410),
-  //   category: "luxury",
-  //   brand: "bentley",
-  //   description: "The Bentley Bentayga Azure represents the pinnacle of luxury SUVs, combining extraordinary performance with unparalleled comfort. The Azure specification enhances wellbeing with unique design elements and increased comfort features, ensuring a serene driving experience in the most opulent surroundings.",
-  //   specs: {
-  //     engine: "4.0L Twin-Turbo V8",
-  //     power: "542 hp",
-  //     torque: "770 Nm",
-  //     acceleration: "4.5 sec (0-100 km/h)",
-  //     topSpeed: "290 km/h",
-  //     fuelType: "Gasoline",
-  //     fuelConsumption: "13.0 L/100km",
-  //     driveTrain: "AWD",
-  //     features: [
-  //       "Wellness quilted seats",
-  //       "Azure illuminated treadplates",
-  //       "Naim for Bentley premium audio",
-  //       "Bentley Dynamic Ride",
-  //       "Front seat comfort specification",
-  //       "Mood lighting",
-  //       "Head-up display",
-  //       "Night vision"
-  //     ]
-  //   }
-  // },
 
   // Range Rover Vehicles
   {
@@ -834,42 +761,6 @@ export const carsDatabase: Car[] = [
   },
 
   // Economy Vehicles
-  // {
-  //   id: "toyota-corolla",
-  //   name: "Toyota Corolla",
-  //   images: [
-  //   ],
-  //   rating: 4.3,
-  //   reviews: 198,
-  //   passengers: 5,
-  //   airConditioning: true,
-  //   doors: 4,
-  //   transmission: "Auto",
-  //   price: convertToAED(70),
-  //   category: "economy",
-  //   brand: "toyota",
-  //   description: "The Toyota Corolla continues its legacy as one of the world's most popular compact cars. Known for its reliability, efficiency and value, the latest generation adds dynamic styling, improved performance, and enhanced technology while maintaining the practical qualities that have made it a global bestseller.",
-  //   specs: {
-  //     engine: "1.8L Inline-4",
-  //     power: "139 hp",
-  //     torque: "172 Nm",
-  //     acceleration: "10.2 sec (0-100 km/h)",
-  //     topSpeed: "180 km/h",
-  //     fuelType: "Gasoline",
-  //     fuelConsumption: "6.0 L/100km",
-  //     driveTrain: "FWD",
-  //     features: [
-  //       "Toyota Safety Sense 2.0",
-  //       "8-inch touchscreen",
-  //       "Apple CarPlay & Android Auto",
-  //       "Automatic climate control",
-  //       "LED headlights",
-  //       "60/40 split rear seats",
-  //       "Smart key with push button start",
-  //       "Backup camera"
-  //     ]
-  //   }
-  // },
   {
     id: "kia-cerato",
     name: "Kia Cerato 2022",
@@ -1023,41 +914,5 @@ export const carsDatabase: Car[] = [
         "Drive mode selector"
       ]
     }
-  },
-  // {
-  //   id: "hyundai-staria",
-  //   name: "Hyundai Staria (11 Passengers)",
-  //   images: [
-  //   ],
-  //   rating: 4.4,
-  //   reviews: 86,
-  //   passengers: 11,
-  //   airConditioning: true,
-  //   doors: 5,
-  //   transmission: "Auto",
-  //   price: convertToAED(190),
-  //   category: "minivan",
-  //   brand: "hyundai",
-  //   description: "The Hyundai Staria represents a bold new vision for MPVs with its futuristic design and exceptional space. This 11-passenger variant maximizes practicality while delivering a premium experience, making it ideal for large families, group travel, or commercial transport applications.",
-  //   specs: {
-  //     engine: "2.2L CRDi Diesel",
-  //     power: "177 hp",
-  //     torque: "431 Nm",
-  //     acceleration: "12.4 sec (0-100 km/h)",
-  //     topSpeed: "180 km/h",
-  //     fuelType: "Diesel",
-  //     fuelConsumption: "7.5 L/100km",
-  //     driveTrain: "FWD",
-  //     features: [
-  //       "11-seat configuration",
-  //       "10.25-inch touchscreen infotainment",
-  //       "Wireless charging",
-  //       "Ambient interior lighting",
-  //       "Smart power sliding doors",
-  //       "Full-range safety systems",
-  //       "Multi-zone climate control",
-  //       "Interior camera to monitor rear passengers"
-  //     ]
-  //   }
-  // }
+  }
 ];

@@ -33,8 +33,8 @@ const passengerOptions = [
   { value: "6", label: "6+ Passengers" },
 ];
 
-// Increased maximum price to 5000 AED
-const MAX_PRICE = 5000;
+// Increased maximum price to 20000 AED to include luxury vehicles
+const MAX_PRICE = 20000;
 
 interface FilterSectionProps {
   title: string;

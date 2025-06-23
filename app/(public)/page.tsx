@@ -6,6 +6,7 @@ import HowItWorks from "./_components/home/HowItWorks";
 import WhyChooseUs from "./_components/home/WhyChooseUs";
 import PopularDeals from "./_components/home/PopularDeals";
 import Testimonials from "./_components/home/Testimonials";
+import BlogSection from "./_components/home/BlogSection";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
         <PopularDeals />
         <WhyChooseUs />
         <HowItWorks />
+        <BlogSection />
         {/* <Testimonials /> */}
       </main>
       <Footer />

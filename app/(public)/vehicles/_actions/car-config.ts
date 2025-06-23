@@ -1,7 +1,7 @@
 // app/(public)/vehicles/_actions/car-config.ts
 
 // Maximum price for car rentals (in AED)
-export const MAX_PRICE = 5000; // Updated to match highest price in PDF
+export const MAX_PRICE = 20000; // Updated to include luxury vehicles like Lamborghini Revuelto
 
 // Currency code
 export const CURRENCY_CODE = 'AED';

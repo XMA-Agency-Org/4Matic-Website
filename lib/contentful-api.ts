@@ -104,6 +104,8 @@ export async function getAllVehicles(): Promise<Car[]> {
     const response = await contentfulClient.getEntries<ContentfulRentalVehicle>({
       content_type: 'rentalVehicle',
       include: 2, // Include linked entries (brand, category, specs)
+      limit: 1000, // Increase limit to ensure all vehicles are fetched
+      order: '-sys.createdAt', // Order by creation date to ensure consistent results
     })
     
     return response.items.map(transformVehicleToLegacyCar)
@@ -166,6 +168,7 @@ export async function getFilteredVehicles(params: {
     const query: any = {
       content_type: 'rentalVehicle',
       include: 2,
+      limit: 1000, // Ensure we fetch all vehicles
     }
 
     // Add category filter
@@ -210,7 +213,7 @@ export async function getFilteredVehicles(params: {
     }
 
     // Apply sorting (client-side since Contentful sorting is limited)
-    const { sort = 'recommended', page = 1, pageSize = 9, maxPrice = 10000 } = params
+    const { sort = 'recommended', page = 1, pageSize = 9 } = params
     
     cars.sort((a, b) => {
       switch (sort) {
@@ -221,8 +224,28 @@ export async function getFilteredVehicles(params: {
         case 'rating-desc':
           return b.rating - a.rating
         default:
-          // Recommended sort
-          return b.rating * 0.7 + (1 - b.price / maxPrice) * 0.3 - (a.rating * 0.7 + (1 - a.price / maxPrice) * 0.3)
+          // Recommended sort - balanced algorithm that showcases both value and premium options
+          // First, prioritize by rating (primary factor)
+          const ratingDiff = b.rating - a.rating
+          
+          // If ratings are very close (within 0.1), use a mix of factors
+          if (Math.abs(ratingDiff) < 0.1) {
+            // For cars with similar ratings, create variety by mixing price ranges
+            // This ensures premium cars appear alongside value options
+            const isPremiumA = a.price > 5000
+            const isPremiumB = b.price > 5000
+            
+            // If one is premium and one isn't, alternate them for variety
+            if (isPremiumA !== isPremiumB) {
+              // This creates a mixed display of premium and value cars
+              return isPremiumB ? 1 : -1
+            }
+            
+            // If both are in same category, sort by reviews count as tiebreaker
+            return b.reviews - a.reviews
+          }
+          
+          return ratingDiff
       }
     })
 

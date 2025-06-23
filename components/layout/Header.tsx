@@ -67,6 +67,7 @@ const Header: React.FC = () => {
         href: brand.id === "all" ? "/brands" : `/vehicles?brand=${brand.id}`,
       })),
     },
+    { label: "Blog", href: "/blog" },
     { label: "Contact Us", href: "/contact-us" },
   ];
 
