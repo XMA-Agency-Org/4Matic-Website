@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowDownAZ, ArrowUpAZ, ChevronDown, TrendingUp } from "lucide-react";
+import Button from "@/components/ui/Button";
 
 interface SortOption {
   id: string;
@@ -64,17 +65,15 @@ export default function SortDropdown({ currentSort }: SortDropdownProps) {
   
   return (
     <div className="relative" ref={dropdownRef}>
-      <button
+      <Button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 bg-white dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700 rounded-lg px-3 py-2 text-sm font-medium text-secondary-900 dark:text-white hover:bg-secondary-50 dark:hover:bg-secondary-700 transition-colors"
         aria-label="Sort vehicles"
+        variant="outline"
+        icon={currentSortOption.icon}
+        size="sm"
       >
-        <span className="flex items-center">
-          {currentSortOption.icon}
-          <span className="ml-2">Sort: {currentSortOption.label}</span>
-        </span>
-        <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? "rotate-180" : ""}`} />
-      </button>
+        Sort: {currentSortOption.label}
+      </Button>
       
       {isOpen && (
         <div className="absolute right-0 z-10 mt-2 w-60 rounded-md bg-white dark:bg-secondary-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">

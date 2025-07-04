@@ -21,6 +21,7 @@ interface VehiclesPageProps {
     passengers?: string;
     sort?: string;
     page?: string;
+    q?: string;
   };
 }
 

@@ -15,6 +15,7 @@ interface GetCarsParams {
   sort?: string;
   page?: number;
   pageSize?: number;
+  searchQuery?: string;
 }
 
 export async function getCars(params: GetCarsParams) {
@@ -28,7 +29,8 @@ export async function getCars(params: GetCarsParams) {
     maxYear,
     sort = "recommended", 
     page = 1, 
-    pageSize = 9 
+    pageSize = 9,
+    searchQuery
   } = params;
   
   // Use Contentful API with filtering
@@ -42,7 +44,8 @@ export async function getCars(params: GetCarsParams) {
     maxYear,
     sort,
     page,
-    pageSize
+    pageSize,
+    searchQuery
   });
 }
 

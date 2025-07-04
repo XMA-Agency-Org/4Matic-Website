@@ -1,12 +1,7 @@
 # CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
-## Build and Development Commands
-- `npm run dev` - Start development server with turbopack
-- `npm run build` - Build the application for production
-- `npm run start` - Start the production server
-- `npm run lint` - Run ESLint to check code quality
+use Bun as the package manager and bundler.
 
 ## Code Style Guidelines
 - **TypeScript**: Strict type checking enabled. Use proper type definitions for all components and functions.

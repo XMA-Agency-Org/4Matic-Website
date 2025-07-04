@@ -323,7 +323,6 @@ export default function FilterModal() {
         size="sm"
         leftIcon={<SlidersHorizontal className="h-4 w-4" />}
         onClick={toggleFilterModal}
-        className="filter-toggle-btn"
       >
         Filters
         {activeFilterCount > 0 && (

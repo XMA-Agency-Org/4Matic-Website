@@ -1,6 +1,7 @@
 import { contentfulClient } from './contentful'
 import { Car, CarSpecs } from '@/types/car'
 import { Entry } from 'contentful'
+import Fuse from 'fuse.js'
 
 // Contentful field interfaces matching the actual content types
 interface ContentfulRentalVehicle {
@@ -162,6 +163,7 @@ export async function getFilteredVehicles(params: {
   sort?: string;
   page?: number;
   pageSize?: number;
+  searchQuery?: string;
 }): Promise<{ cars: Car[], totalCars: number }> {
   try {
     // Build Contentful query
@@ -203,6 +205,31 @@ export async function getFilteredVehicles(params: {
     // Get all matching vehicles first
     const response = await contentfulClient.getEntries<ContentfulRentalVehicle>(query)
     let cars = response.items.map(transformVehicleToLegacyCar)
+
+    // Apply search filtering using Fuse.js for better fuzzy search
+    if (params.searchQuery && params.searchQuery.trim()) {
+      const fuseOptions = {
+        keys: [
+          { name: 'name', weight: 0.4 },
+          { name: 'brand', weight: 0.3 },
+          { name: 'category', weight: 0.2 },
+          { name: 'description', weight: 0.1 },
+          { name: 'transmission', weight: 0.05 },
+          { name: 'specs.features', weight: 0.1 }
+        ],
+        threshold: 0.3, // Fuzzy matching threshold
+        includeScore: true,
+        minMatchCharLength: 2,
+        ignoreLocation: true,
+        findAllMatches: true
+      }
+
+      const fuse = new Fuse(cars, fuseOptions)
+      const results = fuse.search(params.searchQuery.trim())
+      
+      // Extract cars from Fuse results and sort by relevance
+      cars = results.map(result => result.item)
+    }
 
     // Apply year filtering (client-side since we extract year from names)
     if (params.minYear !== undefined) {

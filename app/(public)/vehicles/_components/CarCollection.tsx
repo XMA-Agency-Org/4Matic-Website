@@ -17,6 +17,7 @@ interface CarCollectionProps {
     passengers?: string;
     sort?: string;
     page?: string;
+    q?: string;
   }>;
 }
 
@@ -29,7 +30,8 @@ export default async function CarCollection({ searchParams }: CarCollectionProps
     maxPrice, 
     passengers, 
     sort = "recommended",
-    page = "1" 
+    page = "1",
+    q: searchQuery
   } = params;
   
   const currentPage = parseInt(page, 10) || 1;
@@ -45,6 +47,7 @@ export default async function CarCollection({ searchParams }: CarCollectionProps
     sort,
     page: currentPage,
     pageSize,
+    searchQuery,
   });
   
   const totalPages = Math.ceil(totalCars / pageSize);
@@ -99,11 +102,16 @@ export default async function CarCollection({ searchParams }: CarCollectionProps
   return (
     <div className="w-full">
       {/* Collection header with total count, filters and sorting */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
+      <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center mb-8">
         <div className="mb-4 sm:mb-0 flex items-center">
           <p className="text-sm text-secondary-600 dark:text-secondary-400 mr-4">
             Showing <span className="font-medium text-secondary-900 dark:text-white">{cars.length}</span> of{" "}
             <span className="font-medium text-secondary-900 dark:text-white">{totalCars}</span> vehicles
+            {searchQuery && (
+              <span className="ml-2 text-primary-600 dark:text-primary-400">
+                for &quot;{searchQuery}&quot;
+              </span>
+            )}
           </p>
           
           <FilterModal />
