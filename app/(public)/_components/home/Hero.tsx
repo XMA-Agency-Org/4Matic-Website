@@ -5,10 +5,11 @@ import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
+import VehicleSearch from "@/app/(public)/vehicles/_components/VehicleSearch";
 
 export default function Hero() {
   return (
-    <div className="relative pt-24 overflow-hidden">
+    <div className="relative pt-24">
       {/* Background Elements */}
       <div className="absolute inset-0 z-10 pointer-events-none">
         
@@ -104,57 +105,21 @@ export default function Hero() {
         </div>
         
         {/* Search Bar */}
-        {/* <div className="relative -mt-8 mb-16 z-20"> */}
-        {/*   <div className="bg-white dark:bg-secondary-800 rounded-xl shadow-xl p-6 backdrop-blur-sm"> */}
-        {/*     <div className="grid grid-cols-1 md:grid-cols-3 gap-6"> */}
-        {/*       <div className="relative"> */}
-        {/*         <label className="block text-secondary-500 text-sm font-medium mb-2">Location</label> */}
-        {/*         <div className="relative"> */}
-        {/*           <MapPinIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-secondary-400" /> */}
-        {/*           <input */}
-        {/*             type="text" */}
-        {/*             placeholder="Where do you need a car?" */}
-        {/*             className="w-full py-3 pl-10 pr-3 bg-secondary-50 dark:bg-secondary-900 border border-secondary-200 dark:border-secondary-700 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-600 dark:focus:border-primary-600 transition-colors" */}
-        {/*             value={location} */}
-        {/*             onChange={(e) => setLocation(e.target.value)} */}
-        {/*           /> */}
-        {/*         </div> */}
-        {/*       </div> */}
-        {/*        */}
-        {/*       <div className="relative"> */}
-        {/*         <label className="block text-secondary-500 text-sm font-medium mb-2">Pick-up Date</label> */}
-        {/*         <div className="relative"> */}
-        {/*           <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-secondary-400" /> */}
-        {/*           <input */}
-        {/*             type="date" */}
-        {/*             className="w-full py-3 pl-10 pr-3 bg-secondary-50 dark:bg-secondary-900 border border-secondary-200 dark:border-secondary-700 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-600 dark:focus:border-primary-600 transition-colors" */}
-        {/*             value={pickupDate} */}
-        {/*             onChange={(e) => setPickupDate(e.target.value)} */}
-        {/*           /> */}
-        {/*         </div> */}
-        {/*       </div> */}
-        {/*        */}
-        {/*       <div className="relative"> */}
-        {/*         <label className="block text-secondary-500 text-sm font-medium mb-2">Return Date</label> */}
-        {/*         <div className="relative"> */}
-        {/*           <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-secondary-400" /> */}
-        {/*           <input */}
-        {/*             type="date" */}
-        {/*             className="w-full py-3 pl-10 pr-3 bg-secondary-50 dark:bg-secondary-900 border border-secondary-200 dark:border-secondary-700 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-600 dark:focus:border-primary-600 transition-colors" */}
-        {/*             value={returnDate} */}
-        {/*             onChange={(e) => setReturnDate(e.target.value)} */}
-        {/*           /> */}
-        {/*         </div> */}
-        {/*       </div> */}
-        {/*     </div> */}
-        {/*      */}
-        {/*     <div className="mt-6"> */}
-        {/*       <Button variant="primary" size="lg" className="w-full md:w-auto"> */}
-        {/*         Search Available Cars */}
-        {/*       </Button> */}
-        {/*     </div> */}
-        {/*   </div> */}
-        {/* </div> */}
+        <div className="relative pb-16 z-20">
+          <div className="bg-white dark:bg-secondary-800 rounded-xl shadow-xl p-6 backdrop-blur-sm">
+            <div className="text-center mb-6">
+              <h3 className="text-lg font-semibold text-secondary-900 dark:text-white mb-2">
+                Find Your Perfect Vehicle
+              </h3>
+              <p className="text-secondary-600 dark:text-secondary-400">
+                Search our premium fleet by name, brand, or category
+              </p>
+            </div>
+            <div className="mx-auto max-w-lg">
+              <VehicleSearch />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

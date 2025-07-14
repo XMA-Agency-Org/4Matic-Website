@@ -87,8 +87,8 @@ export default function WhyChooseUs() {
           <div className="w-full lg:w-1/2 lg:pl-12">
             {/* Header */}
             <div className="mb-12">
-              <div className="inline-block bg-blue-600 text-white text-xs font-medium px-4 py-2 rounded-md uppercase tracking-wider mb-4">
-                WHY CHOOSE US
+              <div className="label">
+                Why Choose Us
               </div>
               <h2 className="text-white text-3xl md:text-4xl font-bold mb-8">
                 We offer the best experience with our rental deals
