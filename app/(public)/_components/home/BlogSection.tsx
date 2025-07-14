@@ -12,8 +12,8 @@ export default async function BlogSection() {
   }
   
   return (
-    <section className="py-16 md:py-24 bg-muted/50">
-      <div className="container">
+    <section className="py-24 bg-muted/50">
+      <div className="max-w-7xl mx-auto px-4 md:px-6">
         <SectionHeader
           title="Latest from Our Blog"
           subtitle="Expert insights, driving tips, and Dubai travel guides"

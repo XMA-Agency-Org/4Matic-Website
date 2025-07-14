@@ -3,6 +3,7 @@ import { Briefcase, User, Car, Headset } from "lucide-react";
 import Image from "next/image";
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
+import Audi from "@/public/Audi 1_1 - Edited.png";
 
 interface Feature {
   icon: React.ReactNode;
@@ -60,12 +61,10 @@ export default function WhyChooseUs() {
       <div className="hidden lg:block absolute bottom-0 left-0 z-10">
         <motion.div style={{ x: carX }}>
           <Image
-            src="/Audi 1.png"
+            src={Audi}
             alt="Luxury Car"
-            width={900}
-            height={500}
             priority
-            className="object-contain"
+            className="object-contain w-[1000px] h-auto"
           />
         </motion.div>
       </div>
